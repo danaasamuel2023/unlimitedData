@@ -5,7 +5,7 @@ const ConnectDB = require('./DataBaseConnection/connection.js');
 // Either import just the router or destructure it from the object
 const authRouter = require('./AuthRoutes/Auth.js').router; 
 const dataOrderRoutes = require('./orderRou/order.js');
-const Deposit = require('./DepositeRoutes/UserDeposite.js');
+const Deposit = require('./DepositeRoute/UsersDeposite.js');
 const Developer = require('./ResellerApi/resellerApi.js')
 const HubnetAt = require('./HubnetInteraction/hubnet.js');
 const AdminManagement = require('./admin-management/adminManagemet.js')
