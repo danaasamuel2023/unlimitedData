@@ -7,7 +7,7 @@ import {
   AlertCircle, Calendar, Copy, Check
 } from 'lucide-react';
 
-const API_BASE_URL = 'https://datahustle.onrender.com/api/v1';
+const API_BASE_URL = 'https://https://unlimiteddatagh.onrender.com/api/v1';
 const GEONETTECH_BASE_URL = 'https://testhub.geonettech.site/api/v1/checkOrderStatus/:ref';
 const API_KEY = '42|tjhxBxaWWe4mPUpxXN1uIk0KTxypvlSqOIOQWz6K162aa0d6';
 const TELCEL_API_URL = 'https://iget.onrender.com/api/developer/orders/reference/:orderRef';

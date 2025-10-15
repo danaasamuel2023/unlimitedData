@@ -283,7 +283,6 @@ const MobileNavbar = () => {
                 icon={<Sparkles size={19} />} 
                 text="AT Big Time" 
                 path="/at-big-time"
-                disabled={true} 
               />
 
               <SectionHeading title="Finance" />
@@ -303,13 +302,11 @@ const MobileNavbar = () => {
                 icon={<BarChart2 size={19} />} 
                 text="Analytics" 
                 path="/reports"
-                disabled={true}
               />
               <NavItem 
                 icon={<Settings size={19} />} 
                 text="Settings" 
                 path="/settings"
-                disabled={true}
               />
 
               {/* Logout Button */}
