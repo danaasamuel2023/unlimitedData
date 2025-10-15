@@ -198,7 +198,7 @@ export default function SignupPage() {
     }
 
     try {
-      const response = await fetch('https://datahustle.onrender.com/api/v1/register', {
+      const response = await fetch('https://https://unlimiteddatagh.onrender.com/api/v1/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

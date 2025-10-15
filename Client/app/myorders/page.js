@@ -78,7 +78,7 @@ const TransactionsPage = () => {
     setIsLoading(true);
     try {
       const userId = user.id;
-      let url = `https://datahustle.onrender.com/api/v1/user-transactions/${userId}?page=${pagination.page}&limit=${pagination.limit}`;
+      let url = `https://https://unlimiteddatagh.onrender.com/api/v1/user-transactions/${userId}?page=${pagination.page}&limit=${pagination.limit}`;
       
       if (statusFilter) {
         url += `&status=${statusFilter}`;
