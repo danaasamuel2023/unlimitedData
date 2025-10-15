@@ -27,6 +27,13 @@ const DashboardPage = () => {
     telecel: { inStock: true, loading: true, lastChecked: null }
   });
 
+  // Network logos - Store images in public folder
+  const networkLogos = {
+    mtn: '/logos/mtn.svg',
+    airteltigo: '/logos/airteltigo.svg',
+    telecel: '/logos/telecel.svg'
+  };
+
   const viewAllOrders = () => {
     router.push('/orders');
   };
@@ -374,7 +381,7 @@ const DashboardPage = () => {
               <button 
                 onClick={() => goToNetwork('mtn')}
                 disabled={!networkInventory.mtn.inStock}
-                className={`relative p-4 sm:p-6 rounded-lg transition-all active:scale-95 shadow-lg ${
+                className={`relative p-4 sm:p-6 rounded-lg transition-all active:scale-95 shadow-lg hover:shadow-xl ${
                   networkInventory.mtn.inStock 
                     ? 'bg-gradient-to-br from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 cursor-pointer' 
                     : 'bg-gradient-to-br from-gray-400 to-gray-500 cursor-not-allowed opacity-60'
@@ -403,14 +410,19 @@ const DashboardPage = () => {
                 </div>
                 
                 <div className="flex sm:flex-col items-center sm:text-center gap-3 sm:gap-0">
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 sm:mx-auto sm:mb-3 bg-white rounded-lg flex items-center justify-center shadow-md flex-shrink-0">
-                    <span className="text-lg sm:text-xl font-bold text-yellow-500">MTN</span>
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 sm:mx-auto sm:mb-3 bg-white rounded-lg flex items-center justify-center shadow-md flex-shrink-0 p-1">
+                    <img src={networkLogos.mtn} alt="MTN Logo" className="w-full h-full object-contain" />
                   </div>
                   <div className="flex-1 sm:flex-none text-left sm:text-center">
                     <p className="text-sm sm:text-base font-bold text-white">MTN Mobile Money</p>
                     <p className="text-xs text-yellow-100 mt-0.5 sm:mt-1">
-                      {networkInventory.mtn.inStock ? 'Fast & Reliable' : 'Currently Unavailable'}
+                      {networkInventory.mtn.inStock ? 'Fast & Reliable • 24/7 Support' : 'Currently Unavailable'}
                     </p>
+                    {networkInventory.mtn.inStock && (
+                      <div className="mt-1 text-xs text-yellow-200">
+                        <span className="font-semibold">From 1GB</span> • <span className="font-semibold">Instant Delivery</span>
+                      </div>
+                    )}
                   </div>
                 </div>
               </button>
@@ -448,14 +460,19 @@ const DashboardPage = () => {
                 </div>
                 
                 <div className="flex sm:flex-col items-center sm:text-center gap-3 sm:gap-0">
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 sm:mx-auto sm:mb-3 bg-white rounded-lg flex items-center justify-center shadow-md flex-shrink-0">
-                    <span className="text-sm sm:text-sm font-bold text-red-600">AT</span>
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 sm:mx-auto sm:mb-3 bg-white rounded-lg flex items-center justify-center shadow-md flex-shrink-0 p-1">
+                    <img src={networkLogos.airteltigo} alt="AirtelTigo Logo" className="w-full h-full object-contain" />
                   </div>
                   <div className="flex-1 sm:flex-none text-left sm:text-center">
                     <p className="text-sm sm:text-base font-bold text-white">AirtelTigo</p>
                     <p className="text-xs text-red-100 mt-0.5 sm:mt-1">
-                      {networkInventory.airteltigo.inStock ? 'Premium Quality' : 'Currently Unavailable'}
+                      {networkInventory.airteltigo.inStock ? 'Premium Quality • Best Coverage' : 'Currently Unavailable'}
                     </p>
+                    {networkInventory.airteltigo.inStock && (
+                      <div className="mt-1 text-xs text-red-200">
+                        <span className="font-semibold">From 500MB</span> • <span className="font-semibold">5min Delivery</span>
+                      </div>
+                    )}
                   </div>
                 </div>
               </button>
@@ -493,17 +510,44 @@ const DashboardPage = () => {
                 </div>
                 
                 <div className="flex sm:flex-col items-center sm:text-center gap-3 sm:gap-0">
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 sm:mx-auto sm:mb-3 bg-white rounded-lg flex items-center justify-center shadow-md flex-shrink-0">
-                    <span className="text-base sm:text-base font-bold text-purple-600">TEL</span>
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 sm:mx-auto sm:mb-3 bg-white rounded-lg flex items-center justify-center shadow-md flex-shrink-0 p-1">
+                    <img src={networkLogos.telecel} alt="Telecel Logo" className="w-full h-full object-contain" />
                   </div>
                   <div className="flex-1 sm:flex-none text-left sm:text-center">
                     <p className="text-sm sm:text-base font-bold text-white">Telecel</p>
                     <p className="text-xs text-purple-100 mt-0.5 sm:mt-1">
-                      {networkInventory.telecel.inStock ? 'Growing Network' : 'Currently Unavailable'}
+                      {networkInventory.telecel.inStock ? 'Growing Network • Affordable Rates' : 'Currently Unavailable'}
                     </p>
+                    {networkInventory.telecel.inStock && (
+                      <div className="mt-1 text-xs text-purple-200">
+                        <span className="font-semibold">From 200MB</span> • <span className="font-semibold">Budget Friendly</span>
+                      </div>
+                    )}
                   </div>
                 </div>
               </button>
+            </div>
+            
+            {/* Network Comparison */}
+            <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+              <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Network Comparison</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                <div className="text-center">
+                  <div className="font-semibold text-yellow-600 dark:text-yellow-400 mb-1">MTN</div>
+                  <div className="text-gray-600 dark:text-gray-400">Best Coverage</div>
+                  <div className="text-gray-600 dark:text-gray-400">24/7 Support</div>
+                </div>
+                <div className="text-center">
+                  <div className="font-semibold text-red-600 dark:text-red-400 mb-1">AirtelTigo</div>
+                  <div className="text-gray-600 dark:text-gray-400">Premium Quality</div>
+                  <div className="text-gray-600 dark:text-gray-400">Fast Delivery</div>
+                </div>
+                <div className="text-center">
+                  <div className="font-semibold text-purple-600 dark:text-purple-400 mb-1">Telecel</div>
+                  <div className="text-gray-600 dark:text-gray-400">Affordable Rates</div>
+                  <div className="text-gray-600 dark:text-gray-400">Growing Network</div>
+                </div>
+              </div>
             </div>
             
             {/* Last Checked Timestamp */}

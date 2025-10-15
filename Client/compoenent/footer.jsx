@@ -35,7 +35,7 @@ const Footer = () => {
                 <Zap className="w-5 h-5 text-white" strokeWidth={2.5} />
               </div>
               <span className="text-xl font-semibold text-white">
-                DATAHUSTLE
+                UnlimitedData Gh
               </span>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed mb-6">
@@ -108,10 +108,10 @@ const Footer = () => {
             <ul className="space-y-3">
               <li>
                 <a 
-                  href="mailto:support@datahustle.com" 
+                  href="mailto:support@unlimiteddatagh.com" 
                   className="text-gray-400 hover:text-white text-sm transition-colors"
                 >
-                  support@datahustle.com
+                  support@unlimiteddatagh.com
                 </a>
               </li>
               <li>
@@ -127,7 +127,7 @@ const Footer = () => {
         <div className="mt-12 pt-8 border-t border-gray-800">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-gray-400 text-sm">
-              © {currentYear} DATAHUSTLE. All rights reserved.
+              © {currentYear} UnlimitedData Gh. All rights reserved.
             </p>
             
             <div className="flex items-center gap-6">

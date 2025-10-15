@@ -174,10 +174,10 @@ const MobileNavbar = () => {
             >
               <div className="flex items-center space-x-2.5">
                 <div className="w-9 h-9 rounded-lg bg-yellow-500 flex items-center justify-center shadow-sm">
-                  <Database className="w-5 h-5 text-white" strokeWidth={2.5} />
+                  <Zap className="w-5 h-5 text-white" strokeWidth={2.5} />
                 </div>
                 <h1 className="text-lg font-bold text-gray-900 dark:text-white">
-                  DataHustle
+                  UnlimitedData Gh
                 </h1>
               </div>
             </span>
@@ -328,10 +328,10 @@ const MobileNavbar = () => {
             <div className="p-6 flex flex-col items-center justify-center h-full">
               <div className="text-center mb-8 max-w-xs">
                 <div className="w-16 h-16 mx-auto mb-4 rounded-lg bg-yellow-500 flex items-center justify-center shadow-md">
-                  <Database className="w-8 h-8 text-white" strokeWidth={2} />
+                  <Zap className="w-8 h-8 text-white" strokeWidth={2} />
                 </div>
                 <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                  Welcome to DataHustle
+                  Welcome to UnlimitedData Gh
                 </h2>
                 <p className="text-sm text-gray-600 dark:text-gray-400">Sign in to access all features and start managing your data</p>
               </div>
