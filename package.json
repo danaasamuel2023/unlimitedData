@@ -1,0 +1,22 @@
+{
+  "name": "unlimited-data-app",
+  "version": "1.0.0",
+  "description": "Unlimited Data App - Full Stack Application",
+  "scripts": {
+    "install-client": "cd Client && npm install",
+    "install-server": "cd server && npm install",
+    "install-all": "npm run install-client && npm run install-server",
+    "build-client": "cd Client && npm run build",
+    "start-server": "cd server && npm start",
+    "dev": "concurrently \"cd server && npm start\" \"cd Client && npm run dev\"",
+    "build": "npm run install-all && npm run build-client",
+    "start": "npm run start-server"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  }
+}
