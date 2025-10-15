@@ -69,7 +69,7 @@ const IconHash = () => (
 );
 
 // Define API base URL - replace with your actual API URL
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://https://unlimiteddatagh.onrender.com/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://unlimiteddatagh.onrender.com/api';
 
 export default function AdminTransactions() {
   const router = useRouter();

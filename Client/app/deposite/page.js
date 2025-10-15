@@ -13,7 +13,7 @@ import {
   Info
 } from 'lucide-react';
 
-const API_BASE_URL = 'https://https://unlimiteddatagh.onrender.com/api/v1';
+const API_BASE_URL = 'https://unlimiteddatagh.onrender.com/api/v1';
 
 const DataHustleDeposit = () => {
   const [amount, setAmount] = useState('');

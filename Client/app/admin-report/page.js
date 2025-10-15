@@ -66,7 +66,7 @@ export default function AdminReports() {
           params.append('endDate', dateRange.endDate);
         }
         
-        const response = await axios.get(`https://https://unlimiteddatagh.onrender.com/api/reports/admin/all?${params.toString()}`);
+        const response = await axios.get(`https://unlimiteddatagh.onrender.com/api/reports/admin/all?${params.toString()}`);
         
         if (response.data.status === 'success') {
           setReports(response.data.data.reports);
@@ -91,7 +91,7 @@ export default function AdminReports() {
       if (!userData || userData.role !== 'admin') return;
       
       try {
-        const response = await axios.get(`https://https://unlimiteddatagh.onrender.com/api/reports/admin/stats?adminId=${userData.id}`);
+        const response = await axios.get(`https://unlimiteddatagh.onrender.com/api/reports/admin/stats?adminId=${userData.id}`);
         
         if (response.data.status === 'success') {
           setStats(response.data.data);
@@ -150,7 +150,7 @@ export default function AdminReports() {
       // Set this report as processing
       setProcessingMap(prev => ({ ...prev, [reportId]: true }));
       
-      const response = await axios.put(`https://https://unlimiteddatagh.onrender.com/api/reports/admin/update/${reportId}`, {
+      const response = await axios.put(`https://unlimiteddatagh.onrender.com/api/reports/admin/update/${reportId}`, {
         adminId: userData.id,
         status: updateStatus,
         adminNotes: adminNotes,
@@ -203,13 +203,13 @@ export default function AdminReports() {
       // Set this report as processing
       setProcessingMap(prev => ({ ...prev, [reportId]: true }));
       
-      const response = await axios.post(`https://https://unlimiteddatagh.onrender.com/api/reports/admin/process-refund/${reportId}`, {
+      const response = await axios.post(`https://unlimiteddatagh.onrender.com/api/reports/admin/process-refund/${reportId}`, {
         adminId: userData.id
       });
       
       if (response.data.status === 'success') {
         // Reload report data
-        const reportResponse = await axios.get(`https://https://unlimiteddatagh.onrender.com/api/reports/details/${reportId}?adminId=${userData.id}`);
+        const reportResponse = await axios.get(`https://unlimiteddatagh.onrender.com/api/reports/details/${reportId}?adminId=${userData.id}`);
         
         if (reportResponse.data.status === 'success') {
           // Update the report in the list

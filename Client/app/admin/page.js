@@ -78,7 +78,7 @@ const AdminUsers = () => {
       }
       
       const response = await axios.get(
-        `https://https://unlimiteddatagh.onrender.com/api/users?page=${page}&search=${search}&sortBy=${sortBy}&sortOrder=${sortOrder}`,
+        `https://unlimiteddatagh.onrender.com/api/users?page=${page}&search=${search}&sortBy=${sortBy}&sortOrder=${sortOrder}`,
         {
           headers: {
             'x-auth-token': token
@@ -143,7 +143,7 @@ const AdminUsers = () => {
       const token = localStorage.getItem('authToken');
       
       const response = await axios.get(
-        `https://https://unlimiteddatagh.onrender.com/api/transactions?userId=${userId}`,
+        `https://unlimiteddatagh.onrender.com/api/transactions?userId=${userId}`,
         {
           headers: {
             'x-auth-token': token
@@ -177,7 +177,7 @@ const AdminUsers = () => {
       const token = localStorage.getItem('authToken');
       
       const response = await axios.put(
-        `https://https://unlimiteddatagh.onrender.com/api/users/${selectedUser._id}/add-money`,
+        `https://unlimiteddatagh.onrender.com/api/users/${selectedUser._id}/add-money`,
         { amount: parseFloat(amountToAdd) },
         {
           headers: {
@@ -215,7 +215,7 @@ const AdminUsers = () => {
       const token = localStorage.getItem('authToken');
       
       const response = await axios.put(
-        `https://https://unlimiteddatagh.onrender.com/api/users/${selectedUser._id}/deduct-money`,
+        `https://unlimiteddatagh.onrender.com/api/users/${selectedUser._id}/deduct-money`,
         { 
           amount: parseFloat(amountToDeduct),
           reason: deductionReason 
@@ -256,7 +256,7 @@ const AdminUsers = () => {
       const token = localStorage.getItem('authToken');
       
       const response = await axios.put(
-        `https://https://unlimiteddatagh.onrender.com/api/users/${selectedUser._id}/toggle-status`,
+        `https://unlimiteddatagh.onrender.com/api/users/${selectedUser._id}/toggle-status`,
         { disableReason },
         {
           headers: {
@@ -289,7 +289,7 @@ const AdminUsers = () => {
       setProcessingAction(true);
       const token = localStorage.getItem('authToken');
       
-      await axios.delete(`https://https://unlimiteddatagh.onrender.com/api/users/${selectedUser._id}`, {
+      await axios.delete(`https://unlimiteddatagh.onrender.com/api/users/${selectedUser._id}`, {
         headers: {
           'x-auth-token': token
         }

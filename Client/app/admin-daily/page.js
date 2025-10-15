@@ -14,7 +14,7 @@ const getDashboardData = async (date) => {
       throw new Error('Authentication token not found');
     }
     
-    const response = await fetch(`https://https://unlimiteddatagh.onrender.com/api/daily-summary?date=${date}`, {
+    const response = await fetch(`https://unlimiteddatagh.onrender.com/api/daily-summary?date=${date}`, {
       headers: {
         'x-auth-token': authToken
       }

@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Copy, AlertCircle, Check, Moon, Sun } from 'lucide-react';
 
 // API URL - Replace with your actual API URL
-const API_URL = process.env.REACT_APP_API_URL || 'https://https://unlimiteddatagh.onrender.com/api/developer';
+const API_URL = process.env.REACT_APP_API_URL || 'https://unlimiteddatagh.onrender.com/api/developer';
 
 const ApiKeyManagement = () => {
   const [apiKeys, setApiKeys] = useState([]);

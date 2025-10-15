@@ -40,7 +40,7 @@ export default function InventoryPage() {
     try {
       setLoading(true);
       const response = await axios.get(
-        'https://https://unlimiteddatagh.onrender.com/api/inventory',
+        'https://unlimiteddatagh.onrender.com/api/inventory',
         {
           headers: {
             'x-auth-token': token
@@ -79,7 +79,7 @@ export default function InventoryPage() {
       setError(null);
       
       const response = await axios.put(
-        `https://https://unlimiteddatagh.onrender.com/api/inventory/${network}/toggle`, 
+        `https://unlimiteddatagh.onrender.com/api/inventory/${network}/toggle`, 
         {}, // empty body
         getAuthHeaders() // pass the auth headers
       );
@@ -122,7 +122,7 @@ export default function InventoryPage() {
       setError(null);
       
       const response = await axios.put(
-        `https://https://unlimiteddatagh.onrender.com/api/inventory/${network}/toggle-geonettech`, 
+        `https://unlimiteddatagh.onrender.com/api/inventory/${network}/toggle-geonettech`, 
         {}, // empty body
         getAuthHeaders() // pass the auth headers
       );
