@@ -162,7 +162,7 @@ const SupportPage = () => {
       title: 'Phone Support',
       description: 'Speak directly with our support team',
       action: 'Call Now',
-      link: 'tel:+233597760914',
+      link: 'tel:+233503276136',
       color: 'bg-blue-500',
       available: 'Mon-Fri, 8AM-8PM'
     },
@@ -171,7 +171,7 @@ const SupportPage = () => {
       title: 'Email Support',
       description: 'Send us a detailed message',
       action: 'Send Email',
-      link: 'mailto:support@unlimiteddata.com',
+      link: 'mailto:unlimiteddatagh@gmail.com',
       color: 'bg-purple-500',
       available: 'Response within 24 hours'
     }

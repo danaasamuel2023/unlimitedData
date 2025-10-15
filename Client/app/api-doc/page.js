@@ -604,7 +604,12 @@ if __name__ == "__main__":
             <ul className="space-y-2">
               <li className="flex items-center">
                 <FaWhatsapp className="text-green-600 mr-2" /> 
-                WhatsApp: 0597760914
+                WhatsApp: 0204120633
+              </li>
+              <li>
+                <a href="mailto:unlimiteddatagh@gmail.com" className="text-blue-600 hover:underline">
+                  Email: unlimiteddatagh@gmail.com
+                </a>
               </li>
               <li>
                 <a href="https://chat.whatsapp.com/LEfSM2A3RVKJ1yY8JB5osP" className="text-blue-600 hover:underline">
