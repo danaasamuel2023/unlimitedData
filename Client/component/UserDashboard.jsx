@@ -431,9 +431,9 @@ const DashboardPage = () => {
               <button 
                 onClick={() => goToNetwork('airteltigo')}
                 disabled={!networkInventory.airteltigo.inStock}
-                className={`relative p-4 sm:p-6 rounded-lg transition-all active:scale-95 shadow-lg ${
+                className={`relative p-4 sm:p-6 rounded-lg transition-all active:scale-95 shadow-lg hover:shadow-xl ${
                   networkInventory.airteltigo.inStock 
-                    ? 'bg-gradient-to-br from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 cursor-pointer' 
+                    ? 'bg-gradient-to-br from-red-500 via-blue-600 to-blue-700 hover:from-red-600 hover:via-blue-700 hover:to-blue-800 cursor-pointer' 
                     : 'bg-gradient-to-br from-gray-400 to-gray-500 cursor-not-allowed opacity-60'
                 }`}
               >
@@ -481,9 +481,9 @@ const DashboardPage = () => {
               <button 
                 onClick={() => goToNetwork('telecel')}
                 disabled={!networkInventory.telecel.inStock}
-                className={`relative p-4 sm:p-6 rounded-lg transition-all active:scale-95 shadow-lg ${
+                className={`relative p-4 sm:p-6 rounded-lg transition-all active:scale-95 shadow-lg hover:shadow-xl ${
                   networkInventory.telecel.inStock 
-                    ? 'bg-gradient-to-br from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 cursor-pointer' 
+                    ? 'bg-gradient-to-br from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 cursor-pointer' 
                     : 'bg-gradient-to-br from-gray-400 to-gray-500 cursor-not-allowed opacity-60'
                 }`}
               >
@@ -515,11 +515,11 @@ const DashboardPage = () => {
                   </div>
                   <div className="flex-1 sm:flex-none text-left sm:text-center">
                     <p className="text-sm sm:text-base font-bold text-white">Telecel</p>
-                    <p className="text-xs text-purple-100 mt-0.5 sm:mt-1">
+                    <p className="text-xs text-red-100 mt-0.5 sm:mt-1">
                       {networkInventory.telecel.inStock ? 'Growing Network • Affordable Rates' : 'Currently Unavailable'}
                     </p>
                     {networkInventory.telecel.inStock && (
-                      <div className="mt-1 text-xs text-purple-200">
+                      <div className="mt-1 text-xs text-red-200">
                         <span className="font-semibold">From 200MB</span> • <span className="font-semibold">Budget Friendly</span>
                       </div>
                     )}
@@ -543,7 +543,7 @@ const DashboardPage = () => {
                   <div className="text-gray-600 dark:text-gray-400">Fast Delivery</div>
                 </div>
                 <div className="text-center">
-                  <div className="font-semibold text-purple-600 dark:text-purple-400 mb-1">Telecel</div>
+                  <div className="font-semibold text-red-600 dark:text-red-400 mb-1">Telecel</div>
                   <div className="text-gray-600 dark:text-gray-400">Affordable Rates</div>
                   <div className="text-gray-600 dark:text-gray-400">Growing Network</div>
                 </div>
