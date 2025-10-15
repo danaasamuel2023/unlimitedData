@@ -228,9 +228,12 @@ const DashboardPage = () => {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="text-center">
-          <div className="w-16 h-16 mx-auto mb-4 relative">
+          <div className="w-20 h-20 mx-auto mb-6 relative">
             <div className="absolute inset-0 rounded-full border-4 border-gray-200 dark:border-gray-700"></div>
             <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-yellow-500 animate-spin"></div>
+          </div>
+          <div className="mb-4">
+            <h1 className="text-2xl font-bold text-yellow-500 animate-pulse">UnlimitedData</h1>
           </div>
           <p className="text-sm text-gray-600 dark:text-gray-400">Loading dashboard...</p>
         </div>
