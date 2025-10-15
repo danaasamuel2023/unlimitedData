@@ -10,7 +10,8 @@
     "start-server": "cd server && npm start",
     "dev": "concurrently \"cd server && npm start\" \"cd Client && npm run dev\"",
     "build": "npm run install-all && npm run build-client",
-    "start": "cd server && npm start"
+    "start": "node index.js",
+    "postinstall": "npm run install-server"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"
