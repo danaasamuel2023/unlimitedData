@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: unlimited-data-app
+    env: node
+    nodeVersion: 20.18.0
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: 20.18.0
+      - key: BASE_URL
+        value: https://unlimiteddatagh.onrender.com
+      # Paystack keys should be set in Render dashboard environment variables
+      # PAYSTACK_SECRET_KEY and PAYSTACK_PUBLIC_KEY
