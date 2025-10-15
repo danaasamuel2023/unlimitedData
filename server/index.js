@@ -95,9 +95,11 @@ const corsOptions = {
       'http://localhost:3000',
       'http://localhost:3001',
       'https://www.unlimiteddatagh.com',
-      'https://www.unlimiteddatagh.com',
       'https://unlimiteddatagh.com',
-      'https://www.unlimiteddatagh.com'
+      'https://unlimiteddatagh.onrender.com',
+      'https://unlimiteddatagh.onrender.com',
+      'https://unlimiteddatagh.onrender.com',
+      'https://www.unlimiteddatagh.shop'
     ];
     
     if (allowedOrigins.indexOf(origin) !== -1) {

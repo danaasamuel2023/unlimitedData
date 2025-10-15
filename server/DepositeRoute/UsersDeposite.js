@@ -9,10 +9,31 @@ const rateLimit = require('express-rate-limit');
 // Import authentication middleware
 const auth = require('../middlewareUser/middleware');
 
-// Paystack configuration
-const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY; 
-const PAYSTACK_BASE_URL = 'https://api.paystack.co';
-const FEE_PERCENTAGE = 0.03; // 3% fee (Paystack charges + your fee)
+// Import Paystack configuration
+const {
+  PAYSTACK_CONFIG,
+  PAYSTACK_ENDPOINTS,
+  FEE_CONFIG,
+  validatePaystackConfig,
+  getPaystackHeaders,
+  generateCallbackUrl,
+  calculateFee,
+  toPaystackAmount,
+  fromPaystackAmount,
+  validateAmount,
+  generateReference
+} = require('../config/paystack');
+
+// Validate Paystack configuration on startup
+let paystackConfigValid = false;
+try {
+  validatePaystackConfig();
+  paystackConfigValid = true;
+  console.log('✅ Paystack configuration validated successfully');
+} catch (error) {
+  console.error('❌ Paystack configuration error:', error.message);
+  console.warn('⚠️ Paystack integration will be disabled until configuration is fixed');
+}
 
 // mNotify SMS configuration
 const SMS_CONFIG = {
@@ -130,6 +151,16 @@ const checkSuspiciousActivity = async (userId, ip) => {
 // ✅ INITIATE DEPOSIT
 router.post('/deposit', depositLimiter, async (req, res) => {
   try {
+    // Check if Paystack is properly configured
+    if (!paystackConfigValid) {
+      return res.status(503).json({ 
+        success: false, 
+        error: 'Payment service temporarily unavailable',
+        message: 'Paystack configuration is missing. Please contact support.',
+        details: 'PAYSTACK_SECRET_KEY and PAYSTACK_PUBLIC_KEY environment variables are required'
+      });
+    }
+
     const { userId, amount, email } = req.body;
     if (!userId || !amount || amount <= 0) {
       return res.status(400).json({ success: false, error: 'Invalid deposit details' });
@@ -150,11 +181,21 @@ router.post('/deposit', depositLimiter, async (req, res) => {
     if (depositAmount > 50000) {
       return res.status(400).json({ success: false, error: 'Maximum deposit is GHS 50,000' });
     }
-    const fee = depositAmount * FEE_PERCENTAGE;
+    // Validate amount
+    const amountValidation = validateAmount(depositAmount);
+    if (!amountValidation.isValid) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Invalid amount', 
+        details: amountValidation.errors 
+      });
+    }
+
+    const fee = calculateFee(depositAmount);
     const totalAmountWithFee = depositAmount + fee;
     const clientIP = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     const suspiciousCheck = await checkSuspiciousActivity(userId, clientIP);
-    const reference = `DEP-${crypto.randomBytes(10).toString('hex')}-${Date.now()}`;
+    const reference = generateReference('DEP');
     const balanceBefore = user.walletBalance;
     const balanceAfter = balanceBefore + depositAmount;
     const transaction = new Transaction({
@@ -179,40 +220,63 @@ router.post('/deposit', depositLimiter, async (req, res) => {
       }
     });
     await transaction.save();
-    const paystackAmount = Math.round(totalAmountWithFee * 100);
-    const paystackResponse = await axios.post(
-      `${PAYSTACK_BASE_URL}/transaction/initialize`,
-      {
-        email: email || user.email,
-        amount: paystackAmount,
-        currency: 'GHS',
+    const paystackAmount = toPaystackAmount(totalAmountWithFee);
+    
+    try {
+      const paystackResponse = await axios.post(
+        `${PAYSTACK_CONFIG.baseUrl}${PAYSTACK_ENDPOINTS.initialize}`,
+        {
+          email: email || user.email,
+          amount: paystackAmount,
+          currency: 'GHS',
+          reference,
+          callback_url: generateCallbackUrl(reference),
+          metadata: {
+            custom_fields: [
+              { display_name: "User ID", variable_name: "user_id", value: userId.toString() },
+              { display_name: "Base Amount", variable_name: "base_amount", value: depositAmount.toString() }
+            ]
+          }
+        },
+        {
+          headers: getPaystackHeaders()
+        }
+      );
+
+      if (!paystackResponse.data || !paystackResponse.data.data || !paystackResponse.data.data.authorization_url) {
+        throw new Error('Invalid response from Paystack API');
+      }
+
+      return res.json({
+        success: true,
+        message: 'Deposit initiated',
+        paystackUrl: paystackResponse.data.data.authorization_url,
         reference,
-        callback_url: `${process.env.BASE_URL || 'https://datahustle.shop'}/payment/callback?reference=${reference}`,
-        metadata: {
-          custom_fields: [
-            { display_name: "User ID", variable_name: "user_id", value: userId.toString() },
-            { display_name: "Base Amount", variable_name: "base_amount", value: depositAmount.toString() }
-          ]
+        depositInfo: {
+          baseAmount: depositAmount,
+          fee,
+          totalAmount: totalAmountWithFee
         }
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`,
-          'Content-Type': 'application/json'
-        }
-      }
-    );
-    return res.json({
-      success: true,
-      message: 'Deposit initiated',
-      paystackUrl: paystackResponse.data.data.authorization_url,
-      reference,
-      depositInfo: {
-        baseAmount: depositAmount,
-        fee,
-        totalAmount: totalAmountWithFee
-      }
-    });
+      });
+    } catch (paystackError) {
+      console.error('Paystack API Error:', paystackError.response?.data || paystackError.message);
+      
+      // Update transaction status to failed
+      transaction.status = 'failed';
+      transaction.metadata = {
+        ...transaction.metadata,
+        paystackError: paystackError.response?.data || paystackError.message,
+        failedAt: new Date()
+      };
+      await transaction.save();
+
+      return res.status(502).json({
+        success: false,
+        error: 'Payment gateway error',
+        message: 'Unable to initialize payment. Please try again.',
+        details: paystackError.response?.data?.message || 'Paystack API error'
+      });
+    }
   } catch (error) {
     console.error('Deposit Error:', error);
     return res.status(500).json({ success: false, error: 'Internal server error' });
@@ -233,16 +297,13 @@ async function processSuccessfulPayment(reference) {
   try {
     console.log(`✅ Verifying payment with Paystack: ${reference}`);
     const paystackResponse = await axios.get(
-      `${PAYSTACK_BASE_URL}/transaction/verify/${reference}`,
+      `${PAYSTACK_CONFIG.baseUrl}${PAYSTACK_ENDPOINTS.verify}/${reference}`,
       {
-        headers: {
-          Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`,
-          'Content-Type': 'application/json'
-        }
+        headers: getPaystackHeaders()
       }
     );
     const paystackData = paystackResponse.data.data;
-    const actualAmountPaid = paystackData.amount / 100;
+    const actualAmountPaid = fromPaystackAmount(paystackData.amount);
     
     // ✅ Get expected amount - calculate if metadata missing
     let expectedAmount;
@@ -250,7 +311,7 @@ async function processSuccessfulPayment(reference) {
       expectedAmount = transaction.metadata.expectedPaystackAmount;
     } else {
       // Old transaction without metadata - calculate expected amount with fee
-      const calculatedFee = transaction.amount * FEE_PERCENTAGE;
+      const calculatedFee = calculateFee(transaction.amount);
       expectedAmount = transaction.amount + calculatedFee;
       console.warn(`⚠️ Transaction ${reference} missing expectedPaystackAmount. Calculated: ${expectedAmount}`);
     }
@@ -261,7 +322,7 @@ async function processSuccessfulPayment(reference) {
       expectedAmount,
       metadataExpected: transaction.metadata?.expectedPaystackAmount,
       baseAmount: transaction.amount,
-      fee: transaction.metadata?.fee || (transaction.amount * FEE_PERCENTAGE),
+      fee: transaction.metadata?.fee || calculateFee(transaction.amount),
       paystackStatus: paystackData.status
     });
     
@@ -357,7 +418,7 @@ router.get('/callback', async (req, res) => {
         <!DOCTYPE html>
         <html>
           <head>
-            <meta http-equiv="refresh" content="0;url=https://www.datahustle.shop/payment/callback?error=no_reference" />
+            <meta http-equiv="refresh" content="0;url=https://unlimiteddatagh.onrender.com/payment/callback?error=no_reference" />
             <title>Redirecting...</title>
           </head>
           <body style="margin:0;padding:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);display:flex;align-items:center;justify-content:center;min-height:100vh;">
@@ -379,7 +440,7 @@ router.get('/callback', async (req, res) => {
       <!DOCTYPE html>
       <html>
         <head>
-          <meta http-equiv="refresh" content="2;url=https://www.datahustle.shop/payment/callback?reference=${reference}" />
+          <meta http-equiv="refresh" content="2;url=https://unlimiteddatagh.onrender.com/payment/callback?reference=${reference}" />
           <title>Processing Payment...</title>
         </head>
         <body style="margin:0;padding:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);display:flex;align-items:center;justify-content:center;min-height:100vh;">
@@ -393,7 +454,7 @@ router.get('/callback', async (req, res) => {
           <script>
             // Instant redirect after 2 seconds
             setTimeout(() => {
-              window.location.href = 'https://www.datahustle.shop/payment/callback?reference=${reference}';
+              window.location.href = 'https://unlimiteddatagh.onrender.com/payment/callback?reference=${reference}';
             }, 2000);
           </script>
         </body>
@@ -403,12 +464,9 @@ router.get('/callback', async (req, res) => {
     // Verify payment in background
     try {
       const paystackResponse = await axios.get(
-        `${PAYSTACK_BASE_URL}/transaction/verify/${reference}`,
+        `${PAYSTACK_CONFIG.baseUrl}${PAYSTACK_ENDPOINTS.verify}/${reference}`,
         {
-          headers: {
-            Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`,
-            'Content-Type': 'application/json'
-          }
+          headers: getPaystackHeaders()
         }
       );
       
@@ -425,7 +483,7 @@ router.get('/callback', async (req, res) => {
         return;
       }
       
-      const actualAmountPaid = paystackData.amount / 100;
+      const actualAmountPaid = fromPaystackAmount(paystackData.amount);
       
       // Get expected amount - if no metadata, calculate it based on current fee structure
       let expectedAmount;
@@ -433,7 +491,7 @@ router.get('/callback', async (req, res) => {
         expectedAmount = transaction.metadata.expectedPaystackAmount;
       } else {
         // Old transaction without metadata - calculate expected amount
-        const calculatedFee = transaction.amount * FEE_PERCENTAGE;
+        const calculatedFee = calculateFee(transaction.amount);
         expectedAmount = transaction.amount + calculatedFee;
         console.warn(`⚠️ Callback: Transaction ${reference} missing metadata. Calculated: ${expectedAmount}`);
       }
@@ -471,7 +529,7 @@ router.get('/callback', async (req, res) => {
       <!DOCTYPE html>
       <html>
         <head>
-          <meta http-equiv="refresh" content="2;url=https://www.datahustle.shop/payment/callback?error=processing_error" />
+          <meta http-equiv="refresh" content="2;url=https://unlimiteddatagh.onre/payment/callback?error=processing_error"
           <title>Redirecting...</title>
         </head>
         <body style="margin:0;padding:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);display:flex;align-items:center;justify-content:center;min-height:100vh;">
@@ -490,8 +548,10 @@ router.get('/callback', async (req, res) => {
 router.post('/paystack/webhook', async (req, res) => {
   try {
     console.log('Webhook:', req.body.event, req.body.data?.reference);
-    const hash = crypto.createHmac('sha512', PAYSTACK_SECRET_KEY).update(JSON.stringify(req.body)).digest('hex');
-    if (hash !== req.headers['x-paystack-signature']) {
+    
+    // Verify webhook signature
+    const signature = req.headers['x-paystack-signature'];
+    if (!verifyWebhookSignature(req.body, signature)) {
       console.error('❌ Invalid webhook signature');
       return res.status(400).json({ error: 'Invalid signature' });
     }
