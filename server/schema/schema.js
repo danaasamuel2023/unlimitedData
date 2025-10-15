@@ -195,7 +195,7 @@ const apiKeySchema = new Schema({
     }
 });
 
-apiKeySchema.index({ key: 1 });
+// Removed duplicate index - key field already has unique: true which creates an index
 apiKeySchema.index({ userId: 1 });
 
 const OrderReportSchema = new mongoose.Schema({
