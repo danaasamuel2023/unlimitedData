@@ -73,7 +73,7 @@ const DataMartDocumentation = () => {
                 <strong>Join our developer community</strong> for updates, support, and discussions:
               </p>
               <a 
-                href="https://chat.whatsapp.com/HfHCT72jm2Z1B14fsJjuhT" 
+                href="https://chat.whatsapp.com/LEfSM2A3RVKJ1yY8JB5osP" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="flex items-center mt-2 text-green-600 hover:text-green-700 font-medium"
@@ -607,7 +607,7 @@ if __name__ == "__main__":
                 WhatsApp: 0597760914
               </li>
               <li>
-                <a href="https://chat.whatsapp.com/HfHCT72jm2Z1B14fsJjuhT" className="text-blue-600 hover:underline">
+                <a href="https://chat.whatsapp.com/LEfSM2A3RVKJ1yY8JB5osP" className="text-blue-600 hover:underline">
                   Join our WhatsApp Developer Community
                 </a>
               </li>
