@@ -46,8 +46,8 @@ const AuthGuard = ({ children }) => {
             </div>
           </div>
           
-          <h1 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2">
-            Unli
+          <h1 className="text-2xl font-semibold text-yellow-500 mb-2">
+            UnlimitedData
           </h1>
           <p className="text-sm text-gray-600 dark:text-gray-400">
             Loading...

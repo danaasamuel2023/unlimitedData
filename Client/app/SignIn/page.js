@@ -207,7 +207,7 @@ export default function LoginPage() {
                 </div>
               </div>
               
-              <h1 className="text-2xl font-bold text-white mb-1">Unli</h1>
+              <h1 className="text-2xl font-bold text-yellow-500 mb-1">UnlimitedData</h1>
               <p className="text-white/90 text-sm font-medium">Welcome Back</p>
             </div>
           </div>

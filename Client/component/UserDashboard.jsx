@@ -72,7 +72,7 @@ const DashboardPage = () => {
 
     for (const network of networks) {
       try {
-        console.log(`🔍 Checking ${network.key.toUpperCase()} inventory...`);
+        console.log(`Checking ${network.key.toUpperCase()} inventory...`);
         
         const response = await fetch(`https://api.datamartgh.shop/api/inventory/check/${network.apiName}`);
         const data = await response.json();
@@ -89,10 +89,10 @@ const DashboardPage = () => {
             }
           }));
           
-          console.log(`✅ ${network.key.toUpperCase()} Inventory:`, inStock ? 'IN STOCK' : 'OUT OF STOCK');
+          console.log(`${network.key.toUpperCase()} Inventory:`, inStock ? 'IN STOCK' : 'OUT OF STOCK');
         }
       } catch (error) {
-        console.error(`❌ Failed to check ${network.key} inventory:`, error);
+        console.error(`Failed to check ${network.key} inventory:`, error);
         
         // Default to out of stock if API fails
         setNetworkInventory(prev => ({
@@ -138,13 +138,13 @@ const DashboardPage = () => {
     
     // Set up auto-refresh every 30 seconds
     const inventoryInterval = setInterval(() => {
-      console.log('🔄 Auto-refreshing network inventory...');
+      console.log('Auto-refreshing network inventory...');
       checkNetworkInventory();
     }, 30000);
     
     return () => {
       clearInterval(inventoryInterval);
-      console.log('🛑 Network inventory auto-refresh stopped');
+      console.log('Network inventory auto-refresh stopped');
     };
   }, [router]);
 

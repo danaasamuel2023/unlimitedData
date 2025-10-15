@@ -17,23 +17,23 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Unli | Data Marketplace",
+  title: "UnlimitedData | Data Marketplace",
   description: "The leading platform for data resellers in Ghana to buy and sell client data securely and efficiently.",
   keywords: "data marketplace, Ghana, data resellers, buy data, sell data, client data, Ghana data market",
   verification: {
     google: "Ef-n9jMB8qrIion-ddD_qPQpqd1syAOgKmuvhaBu_2o",
   },
   openGraph: {
-    title: "Unli | Ghana's Premier Data Marketplace",
+    title: "UnlimitedData | Ghana's Premier Data Marketplace",
     description: "Connect with data resellers across Ghana. Buy and sell client data securely on our trusted platform.",
     url: "https://www.datahustle.shop",
-    siteName: "Unli", 
+    siteName: "UnlimitedData", 
     images: [
       {
         url: "/component/datamart-logo.svg",
         width: 1200,
         height: 630,
-        alt: "Unli - Ghana's Data Marketplace",
+        alt: "UnlimitedData - Ghana's Data Marketplace",
       },
     ],
     locale: "en_GH",
@@ -41,7 +41,7 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Unli | Ghana's Premier Data Marketplace",
+    title: "UnlimitedData | Ghana's Premier Data Marketplace",
     description: "Connect with data resellers across Ghana. Buy and sell client data securely on our trusted platform.",
     images: ["/images/datamart-twitter.jpg"],
   },
